@@ -6,12 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My todo list app</title>
+  <!-- font-awesome -->
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css'
     integrity='sha512-q3eWabyZPc1XTCmF+8/LuE1ozpg5xxn7iO89yfSOd5/oKvyqLngoNGsx8jq92Y8eXJ/IRxQbEC+FGSYxtk2oiw=='
     crossorigin='anonymous' />
-  <!-- bootstrap -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+  <!-- stylesheet0 -->
   <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -21,45 +20,76 @@
 
 
     <div class="wrap">
-      <button class="btn-add"></button>
+      <button @click="openModal" class="btn-add"></button>
 
 
       <nav class="menu">
         <ul class="menu-list">
-          <li class="menu-list__item">
-            <a class="menu-list__link menu-list__link--current" href="#">
-              <i class="fas fa-list"></i>
-            </a>
-          </li>
-          <li class="menu-list__item">
-            <a class="menu-list__link" href="#">
-              <i class="far fa-calendar-check"></i>
-            </a>
-          </li>
+          <template v-for="(btn, index) in menuBtns">
+            <li class="menu-list__item">
+              <button @click="changeBtnStatus(index)" class="menu-list__btn"
+                :class="{ 'menu-list__btn--current' : btn.active }">
+                <i :class="btn.iconClass"></i>
+              </button>
+            </li>
+          </template>
         </ul>
       </nav>
 
+      <!-- task list -->
+      <ul class="todo-list" ref="ul">
 
-      <ul class="todo-list">
-        <template v-for="task in tasks">
+        <!-- hint text -->
+        <li v-if="!loadTasks.length" class="todo-list__hint">There are no tasks...</li>
+
+        <!-- task items-->
+        <template v-for="(task, index) in loadTasks">
           <li class="todo-list__item">
-            <div class="checkbox-group">
-              <input class="checkbox-group__checkbox" :id="task.id" type="checkbox" v-model="task.completed">
-              <label class="checkbox-group__label" :for="task.id">{{ task.name }}</label>
-            </div>
+            <!-- task item -->
+            <template v-if="!tasks[index].editBoard">
+              <div class="content-group" :key="task.id">
+                <input :id="task.id" v-model="task.completed" class="content-group__checkbox" type="checkbox">
+                <label ref="taskLabels" :for="task.id" class="content-group__label">{{ task.name }}</label>
+                <button v-if="!task.completed" @click="editTask(index)" class="content-group__btn">
+                  <i class="fas fa-pen"></i>
+                </button>
+                <button @click="removeTask(task.id)" class="content-group__btn"><i
+                    class="fas fa-trash-alt"></i></button>
+              </div>
+            </template>
+
+            <!-- Editbox -->
+            <template v-else>
+              <div class="content-group" :class="{'content-group--warning' : showWarning }" tooltip="must have a value">
+                <input ref="EditInput" v-model.trim="task.name" @keyup.enter="finishEdit(index)"
+                  @keyup.esc="cancelEdit(index)" class="content-group__input" type="text">
+                <button @click="finishEdit(index)" class="content-group__btn"><i class="fas fa-check"></i></button>
+                <button @click="cancelEdit(index)" class="content-group__btn"><i class="fas fa-times"></i></button>
+              </div>
+            </template>
           </li>
         </template>
       </ul>
 
     </div>
 
+    <!-- modal -->
+    <div v-if="isModalOn" class="modal">
+      <div class="window">
+        <div class="window__content" :class="{'window__content--warning' : modalShowWarning}"
+          tooltip="must have a value">
+          <input @keyup.enter="addTask" @keyup.esc="closeModal" v-model.trim="newTaskTemp" ref="newTaskInput"
+            class="window__inputbox" type="text" placeholder="Add some tasks...">
+          <button @click="addTask" class="window__btn-send"><i class="fas fa-arrow-right"></i></button>
+        </div>
+        <button @click="closeModal" class="window__btn-cancel"><i class="fas fa-times"></i></button>
+      </div>
+    </div>
   </div>
 
 
-  <!-- bootstrap.js -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
-    crossorigin="anonymous"></script>
+
+
   <!-- Vue.js -->
   <script type="module" src="js/main.js"></script>
 </body>
