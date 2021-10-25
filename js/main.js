@@ -88,8 +88,8 @@ const app = new Vue({
       }
     },
     removeTask: function (id) {
-      // 未顯示提示訊息時才可以執行
-      if(!this.showWarning) {
+      // 不處於編輯模式時，才會執行
+      if(!this.isEditMode) {
          // 根據 id 到任務列中尋找對應的索引值
         const index = this.tasks.findIndex((item) => item.id === id)
         // 如果有找到才會把任務給刪除
@@ -98,15 +98,10 @@ const app = new Vue({
       
     },
     editTask: function(index) {
-      
-      // 進入編輯模式
-      this.isEditMode = true
-      // 未顯示提示訊息時才可以執行
-      if(!this.showWarning) {
-         // 關閉所有任務的編輯面板
-        for(let task of this.tasks) {
-          task.editBoard = false
-        }
+      // 不處於編輯模式時，才會執行
+      if(!this.isEditMode) {
+        // 進入編輯模式
+        this.isEditMode = true
         // 儲存原本的任務名稱
         this.oldTaskTemp = this.tasks[index].name
         // 開啟指定任務的編輯面板
@@ -132,6 +127,8 @@ const app = new Vue({
         this.tasks[index].editBoard = false
         // 關閉提示訊息
         this.showWarning = false
+        // 退出編輯模式
+        this.isEditMode = false
       }      
     },
     cancelEdit: function(index) {
@@ -146,15 +143,14 @@ const app = new Vue({
 
       // 關閉編輯面板
       this.tasks[index].editBoard = false
-
+      // 退出編輯模式
+      this.isEditMode = false 
       // 關閉提示訊息
-      if(this.showWarning) {
-        this.showWarning = false
-      }
+      this.showWarning = false
     },
     changeBtnStatus: function(index) {
-      // 未顯示提示訊息時才可以執行
-      if(!this.showWarning) {
+      // 不處於編輯模式時，才會執行
+      if(!this.isEditMode) {
         // 如果打開的按鈕，不做事
         if(this.menuBtns[index].active) return
 
@@ -167,8 +163,8 @@ const app = new Vue({
       }
     },
     openModal: function() {
-      // 未顯示提示訊息時才可以執行
-      if(!this.showWarning) {
+      // 不處於編輯模式時，才會執行
+      if(!this.isEditMode) {
          this.isModalOn = true
         // DOM 重新渲染後
         this.$nextTick(function() {
