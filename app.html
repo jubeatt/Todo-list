@@ -60,7 +60,8 @@
 
             <!-- Editbox -->
             <template v-else>
-              <div class="content-group" :class="{'content-group--warning' : showWarning }" tooltip="must have a value">
+              <div class="content-group" :class="{'content-group--warning' : showWarning }"
+                tooltip="Content can't not be empty">
                 <input ref="EditInput" v-model.trim="task.name" @keyup.enter="finishEdit(index)"
                   @keyup.esc="cancelEdit(index)" class="content-group__input" type="text">
                 <button @click="finishEdit(index)" class="content-group__btn"><i class="fas fa-check"></i></button>
@@ -77,7 +78,7 @@
     <div v-if="isModalOn" class="modal">
       <div class="window">
         <div class="window__content" :class="{'window__content--warning' : modalShowWarning}"
-          tooltip="must have a value">
+          tooltip="Content can't not be empty">
           <input @keyup.enter="addTask" @keyup.esc="closeModal" v-model.trim="newTaskTemp" ref="newTaskInput"
             class="window__inputbox" type="text" placeholder="Add some tasks...">
           <button @click="addTask" class="window__btn-send"><i class="fas fa-arrow-right"></i></button>
