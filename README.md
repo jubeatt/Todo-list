@@ -7,7 +7,7 @@
 - [總覽](#總覽)
   - [關於這份專案](#關於這份專案)
   - [螢幕截圖](#螢幕截圖)
-  - [Demo網站](#Demo網站)
+  - [Demo 網站](#Demo網站)
 - [使用的工具](#使用的工具)
 - [使用方式](#使用方式)
 - [參考資源](#參考資源)
@@ -32,7 +32,7 @@
 
 ![screenshot](README-img/screenshot.jpg)
 
-### Demo網站
+### Demo 網站
 
 [網站連結](https://jubeatt.github.io/Todo-list/)
 
@@ -80,5 +80,5 @@
 
 ## 關於作者
 
-- Website - [Jim's blog](https://jubeatt.github.io/)
+- Website - [PeaNu's Paradise](https://jubeatt.github.io/)
 - Facebook - [薛裕正](https://www.facebook.com/profile.php?id=100003593580513)
